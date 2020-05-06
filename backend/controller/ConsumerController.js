@@ -10,6 +10,42 @@ router.post("/addNewBooking", (request, response) => {
         if (error) {
             return response.status(500).send(error);
         }
+
+        //Code to triiger email start 
+
+        //Email Trigger Set Up instructions : 
+        //>> run : cd backend ,
+        // next run >> npm install nodemailer
+        //Now create a mailtrap acct : https://mailtrap.io/
+        //IN your mailtrap dashboard - click on Demo Inbox
+        // copy your username & password and paste in below fields "user" , "pass"
+        //now go and do the confirm booking . you should see a new mail in your mailtrack inbox
+        //Reference : https://stackabuse.com/how-to-send-emails-with-node-js/
+
+        const nodemailer = require('nodemailer');
+        let transport = nodemailer.createTransport({
+            host: 'smtp.mailtrap.io',
+            port: 2525,
+            auth: {
+                user: 'cea093122d37dd',
+                pass: '0c417fdb9ca555'
+            }
+        });
+        const message = {
+            from: 'microdegree@gmail.com', // Sender address
+            to: 'rakeshnk000@gmail.com',         // List of recipients
+            subject: 'Design Your Model S | Tesla', // Subject line
+            text: 'Have the most fun you can in a car. Get your Tesla today!' // Plain text body
+        };
+        transport.sendMail(message, function (err, info) {
+            if (err) {
+                console.log(err)
+            } else {
+                console.log(info);
+            }
+        });
+        //Code to triiger email end
+
         response.send(result.result);
     });
 });
@@ -54,6 +90,7 @@ router.get("/secret", async (request, response) => {
 
 
 
+//COde for getMyOrders Page
 var ObjectId1 = require('mongodb').ObjectId;
 router.post("/getProductInfo", (request, response) => {
     console.log('getProductInfo ', request.body);
@@ -67,6 +104,8 @@ router.post("/getProductInfo", (request, response) => {
         response.send(result);
     });
 });
+
+
 
 
 module.exports = router;
