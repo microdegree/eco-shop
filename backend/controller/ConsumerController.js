@@ -53,6 +53,22 @@ router.get("/secret", async (request, response) => {
 });
 
 
+
+var ObjectId1 = require('mongodb').ObjectId;
+router.post("/getProductInfo", (request, response) => {
+    console.log('getProductInfo ', request.body);
+    database.collection("vendorsProductTable").find({ _id: new ObjectId1(request.body.productId) }).toArray((error, result) => {
+        if (error) {
+            console.log(error)
+            return response.status(500).send(error);
+        }
+
+        console.log(result)
+        response.send(result);
+    });
+});
+
+
 module.exports = router;
 
 //https://www.thepolyglotdeveloper.com/2018/09/developing-restful-api-nodejs-mongodb-atlas/
